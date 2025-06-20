@@ -1,4 +1,5 @@
 import { ProgressBar } from 'smart-webcomponents-react/progressbar';
+import FinancialEntry from '../components/FinancialEntry';
 
 export default function HomePageMenu(){
 
@@ -27,8 +28,13 @@ export default function HomePageMenu(){
                 </div>
             </div>
 
-            <div style={{width: 918, height: 488.38, left: 118, top: 235, position: 'absolute', background: 'white', boxShadow: '0px 0px 1px rgba(0, 0, 0, 0.04)', borderRadius: 19}} />
-            <div style={{width: 226, height: 18, left: 153, top: 262, position: 'absolute', color: 'black', fontSize: 20.11, fontFamily: 'Poppins', fontWeight: '700', wordWrap: 'break-word'}}>Ultimos Lançamentos</div>              
+            <div style={{width: 918, height: 520, left: 118, top: 235, position: 'absolute', background: 'white', boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.04)', borderRadius: 19}}>
+                <div style={{width: 918, height: 420.38, left: 0, top: 80, position: 'relative'}}>
+                    <FinancialEntry entryType={"lastEntries"} />
+                </div>
+            </div>
+            <div style={{width: 226, height: 18, left: 153, top: 262, position: 'absolute', color: 'black', fontSize: 20.11, fontFamily: 'Poppins', fontWeight: '700', wordWrap: 'break-word'}}>Ultimos Lançamentos</div>                         
+
         </div>
     )
 
