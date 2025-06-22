@@ -1,19 +1,31 @@
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import { useState } from 'react';
+import { SERVER_ENDPOINT, showInfoMessage } from '../Utils'
+import { confirmAlert } from 'react-confirm-alert';
+
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import lixeira from '../assets/lixeira-de-reciclagem.png'
-import {SERVER_ENDPOINT} from '../configs'
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 export default function FinancialEntries(props){
 
-    const entryType = props.entryType
+    const fromScreen = props.fromScreen
     const onRowSelection = props.onRowSelection
-    const financialEntryList = props.financialEntryList
-    const hasData = (financialEntryList != undefined) &&
-                    !!financialEntryList &&
-                    financialEntryList.length > 0
+    const[ financialEntryListGrid, setFinancialEntryListGrid ] = useState(props.financialEntryList)
+    const hasData = (financialEntryListGrid != undefined) &&
+                    !!financialEntryListGrid &&
+                    financialEntryListGrid.length > 0
+               
+    const removeInFinancialEntryListGrid = (id) => {
+        const indexToRemove = financialEntryListGrid.findIndex(item => item.id == id)
+
+        if (indexToRemove !== -1){
+            setFinancialEntryListGrid(financialEntryListGrid.filter(item => item.id != id))
+        }
+    }                    
 
 
     /*
@@ -21,7 +33,7 @@ export default function FinancialEntries(props){
     Função para deletar um item da lista do servidor via requisição DELETE
     --------------------------------------------------------------------------------------
     */
-    const deleteFinancialEntryInServer = (givenId,entryTypeId) => {
+    const deleteFinancialEntryInServer = (givenId) => {
     let url = SERVER_ENDPOINT+'/financialEntry';
     fetch(url, {
         method: 'DELETE',
@@ -36,13 +48,13 @@ export default function FinancialEntries(props){
             } })  
         .then((data) => {
             if (data[0]==200) {
-                this.setState()
+                removeInFinancialEntryListGrid(givenId)
             } else {
-                data[1].then(jsonObject => {alert(jsonObject.message)})
+                data[1].then(jsonObject => {showInfoMessage(jsonObject.message)})
             }
         })
         .catch((error) => {
-            alert(error)
+            showInfoMessage(error)
         });
     }                    
 
@@ -69,18 +81,17 @@ export default function FinancialEntries(props){
                 entryTypeName = 'Reserva'
         }
         
-
         confirmAlert({
             title: 'Excluir ' + entryTypeName,
             message: 'Tem certeza que deseja excluir a movimentação com nome de [{0}]'.replace('{0}',name),
             buttons: [
                 {
-                label: 'Sim',
-                onClick: () => deleteFinancialEntryInServer(id,entryTypeId)
+                    label: 'Sim',
+                    onClick: () => deleteFinancialEntryInServer(id)
                 },
                 {
-                label: 'Não',
-                onClick: () => {return}
+                    label: 'Não',
+                    onClick: () => {return}
                 }
             ]
         })
@@ -117,7 +128,7 @@ export default function FinancialEntries(props){
             {
                 dataField: 'entry_type_name',
                 text: 'Tipo',
-                hidden: (entryType !== 'lastEntries')
+                hidden: (fromScreen !== 'lastEntries')
             }, 
             {
                 dataField: 'financial_entry_category_name',
@@ -127,12 +138,12 @@ export default function FinancialEntries(props){
             {
                 dataField: 'credit_card_desc',
                 text: 'Cartão de Crédito',
-                hidden: (entryType !== 'expense')
+                hidden: (fromScreen !== 'expense')
             }, 
             {
                 dataField: 'recurrent_desc',
                 text: 'Recorrente',
-                hidden: (entryType !== 'expense')
+                hidden: (fromScreen === 'lastEntries')
             }, 
             {
                 dataField: 'start_date',
@@ -158,7 +169,24 @@ export default function FinancialEntries(props){
             {
                 dataField: 'finish_date',
                 text: 'Finaliza Em',
-                hidden: (entryType === 'lastEntries')
+                formatter: (cell, row, rowIndex) => {
+                    
+                    let dateformated = '-'
+                    if (cell != undefined || !!cell) {
+                        let valOfDate = new Date(cell+"T00:00:00")
+                        const options = {
+                            day: "numeric",
+                            month: "numeric",
+                            year: "numeric"
+                        }
+                        dateformated = valOfDate.toLocaleString(undefined,options)
+                    }
+
+                    return (
+                        <span>{dateformated}</span>
+                    )
+                },
+                hidden: (fromScreen === 'lastEntries')
             }, 
             {
                 dataField: 'value',
@@ -186,13 +214,13 @@ export default function FinancialEntries(props){
             {
                 dataField: 'value_type_name',
                 text: 'Tipo Valor',
-                hidden: (entryType === 'lastEntries')
+                hidden: (fromScreen === 'lastEntries')
             }, 
             {
                 dataField: 'deleteField',
                 text: 'Excluir',
                 style: {width:'10px', textAlign:'center'},
-                hidden: (entryType !== 'lastEntries'),
+                hidden: (fromScreen === 'lastEntries'),
                 formatter: (cell, row, rowIndex) => {
                     return (
                         <span><img src={lixeira} width="15px" height="15px"/></span>
@@ -225,11 +253,11 @@ export default function FinancialEntries(props){
                                     </span>
                                 )
                             } 
-    
-    if (entryType === 'lastEntries'){
+
+    if (fromScreen === 'lastEntries'){
         return (
             <BootstrapTable keyField='id' 
-                            data={ financialEntryList } 
+                            data={ financialEntryListGrid } 
                             columns={ columns } 
                             bordered={false}
                             hover={hasData} 
@@ -241,14 +269,14 @@ export default function FinancialEntries(props){
             mode: 'radio',
             clickToSelect: true,
             onSelect: (row, isSelect, rowIndex, e) => {
-                console.log(row, isSelect, rowIndex, e);
-                alert('click row')
-            },
-            style: { backgroundColor: '#c8e6c9' } // Example style for selected rows
+                if (onRowSelection != undefined){
+                    onRowSelection(row, rowIndex)
+                }
+            }
         };          
         return (
             <BootstrapTable keyField='id' 
-                            data={ financialEntryList } 
+                            data={ financialEntryListGrid } 
                             columns={ columns } 
                             bordered={false}
                             hover={hasData} 
@@ -258,5 +286,4 @@ export default function FinancialEntries(props){
                             classes="table-borderless" />
         )
     }
-
 }

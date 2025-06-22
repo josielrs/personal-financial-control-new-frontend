@@ -1,168 +1,40 @@
+import { useState, useEffect } from "react"
+import { SERVER_ENDPOINT, showInfoMessage } from '../Utils'
 import FinancialEntries from "./FinancialEntries"
+import axios from 'axios'
 
 export default function FinancialEntry(props){
 
-    const entryType = props.entryType
+    const [financialEntriesList, setFinancialEntriesList] = useState([])
+    const fromScreen = props.fromScreen
     const onRowSelection = props.onRowSelection
 
-    const products = [{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 1,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 80,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": 1000,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    },{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 2,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 1,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": 300,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    },{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 3,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 2,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": 250,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    },{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 0,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 3,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": null,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    },{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 0,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 4,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": null,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    },{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 0,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 5,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": null,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    },{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 0,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 6,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": null,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    },{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 0,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 7,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": null,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    },{
-      "credit_card_desc": null,
-      "credit_card_number": null,
-      "description": "string",
-      "entry_type_id": 0,
-      "entry_type_name": "string",
-      "financial_entry_category_id": 0,
-      "financial_entry_category_name": "string",
-      "finish_date": null,
-      "id": 8,
-      "name": "string",
-      "recurrent": 0,
-      "recurrent_desc": "string",
-      "start_date": "2025-06-20",
-      "value": null,
-      "value_type_id": 0,
-      "value_type_name": "string"
-    }]
+    let serviceUrl = ''
+    switch (fromScreen) {
+        case "revenue":
+            serviceUrl = '/financialEntry?entry_type_id=1'
+            break
+        case "expense":
+            serviceUrl = '/financialEntry?entry_type_id=2'
+            break
+        case "reserve":
+            serviceUrl = '/financialEntry?entry_type_id=3'
+            break            
+        default:          
+            serviceUrl = '/financialEntry?entry_type_id=0&last_entries=true'
+    }
+
+    
+    useEffect(() => {
+      axios.get(SERVER_ENDPOINT + serviceUrl)
+        .then(res => {
+           setFinancialEntriesList(res.data.financialEntries)
+          })  
+        .catch(error => showInfoMessage(error))
+    }, [])
+
 
     return (
-        <FinancialEntries financialEntryList={products} entryType={entryType} />
+        <FinancialEntries financialEntryList={financialEntriesList} fromScreen={fromScreen} noRowSelection={onRowSelection} />
     )
-
-
 }    
