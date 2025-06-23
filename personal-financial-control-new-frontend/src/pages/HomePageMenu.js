@@ -24,7 +24,7 @@ export default function HomePageMenu(){
     useEffect(() => {
       axios.get(SERVER_ENDPOINT + '/financialControl/currentSummary/')
         .then(res => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 let receivedData = res.data
                 if (receivedData.expensesAmout !== undefined && !!receivedData.expensesAmout && receivedData.expensesAmout > 0) {
                     receivedData.expensesAmout = res.data.expensesAmout.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -37,7 +37,7 @@ export default function HomePageMenu(){
                     receivedData.revenueAmout = "R$ 0,00"
                 }
                 setCurrentControlMonthData(receivedData)
-            } else if (res.status == 204) {
+            } else if (res.status === 204) {
                 setCurrentControlMonthData(initialData)
             } else {
                 throw new Error(res.statusText)
