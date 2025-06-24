@@ -17,18 +17,22 @@ export default function FinancialEntry(props){
     const onRowSelection = props.onRowSelection
     const hasData = (financialEntriesList != undefined) &&
                     !!financialEntriesList &&
-                    financialEntriesList.length > 0    
+                    financialEntriesList.length > 0   
+    let descWidth = '600'
 
     let serviceUrl = ''
     switch (fromScreen) {
         case "revenue":
-            serviceUrl = '/financialEntry?entry_type_id=1'
+            serviceUrl = '/financialEntry?entry_type_id=1&last_entries=false'
+            descWidth = '500'
             break
         case "expense":
-            serviceUrl = '/financialEntry?entry_type_id=2'
+            serviceUrl = '/financialEntry?entry_type_id=2&last_entries=false'
+            descWidth = '400'
             break
         case "reserve":
-            serviceUrl = '/financialEntry?entry_type_id=3'
+            serviceUrl = '/financialEntry?entry_type_id=3&last_entries=false'
+            descWidth = '500'
             break            
         default:          
             serviceUrl = '/financialEntry?entry_type_id=0&last_entries=true'
@@ -41,7 +45,7 @@ export default function FinancialEntry(props){
            setFinancialEntriesList(res.data.financialEntries)
           })  
         .catch(error => showInfoMessage(error))
-    }, [])
+    }, [fromScreen])
 
 
     const removeInFinancialEntryListGrid = (id) => {
@@ -138,7 +142,10 @@ export default function FinancialEntry(props){
             },
             {
                 dataField: 'description',
-                text: 'Descrição'
+                text: 'Descrição',
+                headerStyle: {
+                    width: descWidth+'px'
+                }
             },
             {
                 dataField: 'name',
@@ -163,37 +170,33 @@ export default function FinancialEntry(props){
             {
                 dataField: 'credit_card_desc',
                 text: 'Cartão de Crédito',
-                hidden: (fromScreen !== 'expense')
+                hidden: (fromScreen !== 'expense'),
+                headerStyle: {
+                    width: '220px'
+                }
             }, 
             {
                 dataField: 'recurrent_desc',
-                text: 'Recorrente',
-                hidden: (fromScreen === 'lastEntries')
-            }, 
-            {
-                dataField: 'start_date',
-                text: 'Inicia Em',
+                text: 'Rec.',
+                hidden: (fromScreen === 'lastEntries'),
                 formatter: (cell, row, rowIndex) => {
                     
-                    let dateformated = '-'
                     if (cell != undefined || !!cell) {
-                        let valOfDate = new Date(cell+"T00:00:00")
-                        const options = {
-                            day: "numeric",
-                            month: "numeric",
-                            year: "numeric"
+                        if (cell == "SIM") {
+                            return (
+                                <input type="checkbox" disabled={true} checked/>
+                            )
                         }
-                        dateformated = valOfDate.toLocaleString(undefined,options)
                     }
 
                     return (
-                        <span>{dateformated}</span>
+                        <input type="checkbox" disabled={true} checked={false}/>
                     )
                 }
             }, 
             {
-                dataField: 'finish_date',
-                text: 'Finaliza Em',
+                dataField: 'start_date',
+                text: 'Dt. Inicio',
                 formatter: (cell, row, rowIndex) => {
                     
                     let dateformated = '-'
@@ -211,7 +214,34 @@ export default function FinancialEntry(props){
                         <span>{dateformated}</span>
                     )
                 },
-                hidden: (fromScreen === 'lastEntries')
+                headerStyle: {
+                    width: '95px'
+                }
+            }, 
+            {
+                dataField: 'finish_date',
+                text: 'Dt. Fim',
+                formatter: (cell, row, rowIndex) => {
+                    
+                    let dateformated = '-'
+                    if (cell != undefined || !!cell) {
+                        let valOfDate = new Date(cell+"T00:00:00")
+                        const options = {
+                            day: "numeric",
+                            month: "numeric",
+                            year: "numeric"
+                        }
+                        dateformated = valOfDate.toLocaleString(undefined,options)
+                    }
+
+                    return (
+                        <span>{dateformated}</span>
+                    )
+                },
+                hidden: (fromScreen === 'lastEntries'),
+                headerStyle: {
+                    width: '95px'
+                }
             }, 
             {
                 dataField: 'value',
@@ -238,8 +268,22 @@ export default function FinancialEntry(props){
             }, 
             {
                 dataField: 'value_type_name',
-                text: 'Tipo Valor',
-                hidden: (fromScreen === 'lastEntries')
+                text: 'F/V',
+                hidden: (fromScreen === 'lastEntries'),
+                formatter: (cell, row, rowIndex) => {
+                    
+                    if (cell != undefined || !!cell) {
+                        if (cell == "FIXO") {
+                            return (
+                                "F"
+                            )
+                        }
+                    }
+
+                    return (
+                        "V"
+                    )
+                }
             }, 
             {
                 dataField: 'deleteField',
@@ -260,12 +304,14 @@ export default function FinancialEntry(props){
         return <div style={{position: 'relative', padding:'100px 100px 100px 100px', justifyContent:'center', color: 'red', fontSize: 20.11, fontFamily: 'Poppins', fontWeight: '200', wordWrap: 'break-word'}}>Nenhum Lançamento Realizado</div> 
     }
 
-    const paginationOptions = {
+    const paginationOptions = paginationFactory({
+                                sizePerPage: 7,
+                                sizePerPageList: [7],
                                 pageStartIndex: 1,
                                 paginationSize: 5,
                                 showTotal: true,
                                 withFirstAndLast: true, 
-                                alwaysShowAllBtns: true,
+                                alwaysShowAllBtns: false,
                                 firstPageText: 'Primeiro',
                                 prePageText: 'Voltar',
                                 nextPageText: 'Avançar',
@@ -277,8 +323,11 @@ export default function FinancialEntry(props){
                                         Mostrando {from} até {to} de {size} entradas
                                     </span>
                                 )
-                            } 
+                            }) 
 
+    const rowStyle = {
+        whiteSpace: 'nowrap'
+    }
 
     if (fromScreen === 'lastEntries'){
         return (
@@ -288,6 +337,7 @@ export default function FinancialEntry(props){
                             bordered={false}
                             hover={hasData} 
                             noDataIndication={noDataInfo}
+                            rowStyle={rowStyle}
                             classes="table-borderless" />
         )
     } else {
@@ -308,7 +358,8 @@ export default function FinancialEntry(props){
                             hover={hasData} 
                             noDataIndication={noDataInfo}
                             selectRow={selectRow}
-                            pagination={paginationFactory(paginationOptions)}
+                            pagination={paginationOptions}
+                            rowStyle={rowStyle}
                             classes="table-borderless" />
         )
     }

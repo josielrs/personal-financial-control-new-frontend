@@ -29,8 +29,9 @@ code {
 .table-borderless td,
 .table-borderless th {
   border: 0;
+  overflow: hidden;
+  text-overflow: 'ellipsis';
 }
-
 
 body .warning {
     background-color: rgb(255, 208, 0);

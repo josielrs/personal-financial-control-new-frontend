@@ -20,7 +20,7 @@ export default function MainMenu(props){
                 </div>
                 <div data-layer="home" className="Home" style={{left: 68, top: 11, position: 'absolute', color: 'black', fontSize: 24, fontFamily: 'Poppins', fontWeight: '700', wordWrap: 'break-word'}}>home</div>
             </div>
-            <div data-layer="Group 80" className="menuButton" onClick={()=>{handleClick('reserva')}} style={{width: 200, height: 56, left: 40, top: 572, position: 'absolute'}}>
+            <div data-layer="Group 80" className="menuButton" onClick={()=>{handleClick('reserve')}} style={{width: 200, height: 56, left: 40, top: 572, position: 'absolute'}}>
                 <div data-svg-wrapper data-layer="Dollar sign" data-size="48" className="DollarSign" style={{left: 0, top: 4, position: 'absolute'}}>
                     <img src={ReserveIcon}/>
                 </div>
@@ -34,7 +34,7 @@ export default function MainMenu(props){
                         <img src={ControlIcon}/>
                     </div>
             </div>            
-            <div data-layer="Group 84" className="menuButton" onClick={()=>{handleClick('receita')}} style={{width: 200, height: 68, left: 35, top: 319, position: 'absolute'}}>
+            <div data-layer="Group 84" className="menuButton" onClick={()=>{handleClick('revenue')}} style={{width: 200, height: 68, left: 35, top: 319, position: 'absolute'}}>
                 <div data-layer="Frame 6" className="Frame6" style={{padding: 10, left: 0, top: 0, position: 'absolute', justifyContent: 'flex-start', alignItems: 'center', gap: 10, display: 'inline-flex'}}>
                     <div data-svg-wrapper data-layer="Arrow down-circle" data-size="48" className="ArrowDownCircle" style={{position: 'relative'}}>
                         <img src={RevenueIcon}/>
@@ -42,7 +42,7 @@ export default function MainMenu(props){
                 </div>
                 <div data-layer="receitas" className="Receitas" style={{left: 78, top: 14, position: 'absolute', color: 'black', fontSize: 24, fontFamily: 'Poppins', fontWeight: '700', wordWrap: 'break-word'}}>receitas</div>
             </div>
-            <div data-layer="Group 83" className="menuButton" onClick={()=>{handleClick('despesa')}} style={{width: 200, height: 68, left: 35, top: 402, position: 'absolute'}}>
+            <div data-layer="Group 83" className="menuButton" onClick={()=>{handleClick('expense')}} style={{width: 200, height: 68, left: 35, top: 402, position: 'absolute'}}>
                 <div data-layer="Frame 7" className="Frame7" style={{padding: 10, left: 0, top: 0, position: 'absolute', justifyContent: 'flex-start', alignItems: 'center', gap: 10, display: 'inline-flex'}}>
                     <div data-svg-wrapper data-layer="Arrow up-circle" data-size="48" className="ArrowUpCircle" style={{position: 'relative'}}>
                         <img src={ExpensesIcon}/>

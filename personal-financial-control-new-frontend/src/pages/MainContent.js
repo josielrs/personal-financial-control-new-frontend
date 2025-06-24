@@ -8,12 +8,12 @@ export default function MainContent(props){
     const getTagMenuSelected = (value) => {
 
         switch (value) {
-            case "receita":
-                return <FinancialEntryMenu entryType="receita" />
-            case "despesa":
-                return <FinancialEntryMenu entryType="despesas" />
-            case "reserva":
-                return <FinancialEntryMenu entryType="reserva" />
+            case "revenue":
+                return <FinancialEntryMenu entryType="revenue" />
+            case "expense":
+                return <FinancialEntryMenu entryType="expense" />
+            case "reserve":
+                return <FinancialEntryMenu entryType="reserve" />
             case "cartaoDeCredito":
                 return <CreditCardMenu />
             case "controle":
