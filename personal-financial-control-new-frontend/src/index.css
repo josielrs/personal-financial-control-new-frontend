@@ -44,3 +44,14 @@ body .warning {
     font-family: Arial, Helvetica, sans-serif;
     vertical-align: center;
 }
+
+
+.financialActionButton:hover{
+  background-color: #F1FFF3 !important;
+  color: black !important;
+}
+
+.financialActionButton{
+  background-color: #6750A4 !important;
+  border-color: #6750A4 !important;
+}

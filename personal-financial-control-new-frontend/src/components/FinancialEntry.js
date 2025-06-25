@@ -13,6 +13,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 export default function FinancialEntry(props){
 
     const [financialEntriesList, setFinancialEntriesList] = useState([])
+    const sortOption = props.sortOption
     const fromScreen = props.fromScreen
     const onRowSelection = props.onRowSelection
     const hasData = (financialEntriesList != undefined) &&
@@ -38,14 +39,13 @@ export default function FinancialEntry(props){
             serviceUrl = '/financialEntry?entry_type_id=0&last_entries=true'
     }
 
-    
     useEffect(() => {
       axios.get(SERVER_ENDPOINT + serviceUrl)
         .then(res => {
            setFinancialEntriesList(res.data.financialEntries)
           })  
         .catch(error => showInfoMessage(error))
-    }, [fromScreen])
+    }, [sortOption,fromScreen])
 
 
     const removeInFinancialEntryListGrid = (id) => {
@@ -138,7 +138,8 @@ export default function FinancialEntry(props){
             {
                 dataField: 'id',
                 text: 'ID',
-                hidden: true
+                hidden: true,
+                sort: true
             },
             {
                 dataField: 'description',
@@ -165,7 +166,8 @@ export default function FinancialEntry(props){
             {
                 dataField: 'financial_entry_category_name',
                 text: 'Categoria',
-                hidden: true
+                hidden: true,
+                sort: true
             }, 
             {
                 dataField: 'credit_card_desc',
@@ -173,7 +175,8 @@ export default function FinancialEntry(props){
                 hidden: (fromScreen !== 'expense'),
                 headerStyle: {
                     width: '220px'
-                }
+                },
+                sort: true
             }, 
             {
                 dataField: 'recurrent_desc',
@@ -283,7 +286,8 @@ export default function FinancialEntry(props){
                     return (
                         "V"
                     )
-                }
+                },
+                sort: true
             }, 
             {
                 dataField: 'deleteField',
@@ -329,6 +333,22 @@ export default function FinancialEntry(props){
         whiteSpace: 'nowrap'
     }
 
+    let defaultSort = {dataField:'financial_entry_category_name',order:'asc'}
+
+    switch (sortOption) {
+        case "lastentries":
+            defaultSort = {dataField:'id',order:'desc'}
+            break
+        case "creditCard":
+            defaultSort = {dataField:'credit_card_desc',order:'asc'}
+            break
+        case "valueType":
+            defaultSort = {dataField:'value_type_name',order:'asc'}
+            break
+        default:
+            defaultSort = {dataField:'financial_entry_category_name',order:'asc'}
+    }
+
     if (fromScreen === 'lastEntries'){
         return (
             <BootstrapTable keyField='id' 
@@ -338,7 +358,8 @@ export default function FinancialEntry(props){
                             hover={hasData} 
                             noDataIndication={noDataInfo}
                             rowStyle={rowStyle}
-                            classes="table-borderless" />
+                            classes="table-borderless"
+                            sort={defaultSort} />
         )
     } else {
         const selectRow = {
@@ -360,7 +381,8 @@ export default function FinancialEntry(props){
                             selectRow={selectRow}
                             pagination={paginationOptions}
                             rowStyle={rowStyle}
-                            classes="table-borderless" />
+                            classes="table-borderless"
+                            sort={defaultSort} />
         )
     }
 }    
