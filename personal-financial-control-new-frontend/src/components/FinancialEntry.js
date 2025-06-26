@@ -15,6 +15,7 @@ export default function FinancialEntry(props){
     const [financialEntriesList, setFinancialEntriesList] = useState([])
     const sortOption = props.sortOption
     const fromScreen = props.fromScreen
+    const interactionId = props.interactionId
     const onRowSelection = props.onRowSelection
     const hasData = (financialEntriesList != undefined) &&
                     !!financialEntriesList &&
@@ -45,7 +46,7 @@ export default function FinancialEntry(props){
            setFinancialEntriesList(res.data.financialEntries)
           })  
         .catch(error => showInfoMessage(error))
-    }, [sortOption,fromScreen])
+    }, [sortOption,fromScreen,interactionId])
 
 
     const removeInFinancialEntryListGrid = (id) => {
@@ -365,6 +366,7 @@ export default function FinancialEntry(props){
         const selectRow = {
             mode: 'radio',
             clickToSelect: true,
+            selected: false,
             onSelect: (row, isSelect, rowIndex, e) => {
                 if (onRowSelection != undefined){
                     onRowSelection(row, rowIndex)

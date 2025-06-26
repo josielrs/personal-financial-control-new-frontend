@@ -1,19 +1,30 @@
 import { useState, useEffect } from 'react';
 import FinancialEntry from '../components/FinancialEntry';
+import FinancialEntryForm from '../components/FinancialEntryForm';
 import ReserveIcon from "../assets/ReserveIcon.svg"
 import RevenueIcon from "../assets/RevenueIcon.svg"
 import ExpensesIcon from "../assets/ExpensesIcon.svg"
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import check from '../assets/check.svg'
-
+import { isUndefined } from '../Utils'
 
 
 export default function FinancialEntryMenu(props){
 
     const entryType = props.entryType
+    const[interationId, setInteractionId] = useState(0)
+    const[financialEntryData,setFinancialEntryData] = useState({})
+
+    const addInteractionId = () => {
+        setInteractionId(interationId + 1)
+    }
+
+    const onSelectGridRow = (row, index) => {
+        if (!isUndefined(row)) {
+            setFinancialEntryData(row)
+        }
+    }
 
     const [orderOptionSelected,setOptionSelected] = useState({
                                                                 optionSelected: "category",
@@ -102,9 +113,6 @@ export default function FinancialEntryMenu(props){
 
     return (
         <div>
-  
-
-
             <div className="Rectangle53" style={{width: 1148.26, height: 763.83, top:300,  background: 'white', boxShadow: '0px 1.3224623203277588px 1.3224623203277588px rgba(0, 0, 0, 0.50)', borderRadius: 12.89}}>
                 <div style={{width: 1060.39, height: 60.27, top: 10, left: 40, position:'relative', display:'flex', alignItems:'center', justifyContent:'center', background: '#DFF7E2', boxShadow: '0px 1.3224623203277588px 1.3224623203277588px rgba(0, 0, 0, 0.50)', borderRadius: 12.89}}>
                     <div data-size="48" style={{width: 48, height: 48, position: 'relative',  display:'flex'}}>
@@ -113,55 +121,7 @@ export default function FinancialEntryMenu(props){
                     <div style={{color: 'black', fontSize: 24, fontFamily: 'Poppins', fontWeight: '700', wordWrap: 'break-word', position:'relative'}}>&nbsp;&nbsp;{screenName}</div>
                 </div>
                 <div style={{width: 1060.39, height: 60.27, top: 30, left: 10, position:'relative'}}>
-                    <div style={{display:'flex'}}>
-                        <FloatingLabel controlId="floatingInputName" label="Nome" style={{width:600, paddingBottom:4}}>
-                            <Form.Control type="text" placeholder="Nome" />
-                        </FloatingLabel>                    
-                        <FloatingLabel controlId="floatingInputName" label="Categoria" style={{width:400, paddingLeft:4, paddingBottom:4}}>
-                            <Form.Select aria-label="Default select example">
-                                <option disabled>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Select>
-                        </FloatingLabel>                        
-                        <FloatingLabel controlId="floatingInputName" label="Cartão de Crédito" style={{width:400, paddingLeft:4, paddingBottom:4}} hidden={entryType!=="expense"}>
-                            <Form.Select aria-label="Default select example">
-                                <option disabled>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Select>
-                        </FloatingLabel>
-                        <div style={{alignItems:'center', display:'flex', paddingLeft:4, paddingBottom:4}}>
-                            <Form.Check  enabled id="recorrente" label="Recorrente"  />
-                        </div>
-                    </div>
-                    <div style={{display:'flex'}}>
-                        <FloatingLabel controlId="floatingInputName" label="Data Inicio" style={{paddingBottom:4}}>
-                            <Form.Control type="date" placeholder="Nome" />
-                        </FloatingLabel>  
-                        <FloatingLabel controlId="floatingInputName" label="Data Fim" style={{paddingLeft:4, paddingBottom:4}}>
-                            <Form.Control type="date" placeholder="Nome" />
-                        </FloatingLabel>   
-                        <FloatingLabel controlId="floatingInputName" label="Valor (R$)" style={{width:600}}>
-                            <Form.Control type="number" placeholder="Nome" />
-                        </FloatingLabel>
-                        <FloatingLabel controlId="floatingInputName" label="Tipo Valor" style={{width:400, paddingLeft:4, paddingBottom:4}}>
-                            <Form.Select aria-label="Default select example">
-                                <option disabled>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Select>
-                        </FloatingLabel>                       
-                    </div>
-                    <div style={{display:'flex', justifyContent:'center', paddingBottom:10}}>
-                        <div>
-                            <Button as="input" type="button" value="Salvar" className='financialActionButton' style={{width:120,borderRadius:'20px 20px 20px 20px',margin:4}} />
-                            <Button as="input" type="button" value="Limpar" className='financialActionButton' style={{width:120,borderRadius:'20px 20px 20px 20px',margin:4}} />
-                        </div>
-                    </div>   
+                    <FinancialEntryForm entryType={entryType} callbackFunctionToUpdate={addInteractionId} interactionId={interationId} givenFinancialEntryData={financialEntryData}/>
                     <div style={{display:'flex', justifyContent:'center'}}>
                         <div>
                             <ButtonGroup className="mb-2">
@@ -173,7 +133,7 @@ export default function FinancialEntryMenu(props){
                     </div>                                    
                 </div>
                 <div style={{width: 1120, height: 420.38, left: 10, top: 220, position: 'relative', background: 'white', boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.04)', borderRadius: 19}}>
-                    <FinancialEntry fromScreen={entryType} sortOption={orderOptionSelected.optionSelected}/>
+                    <FinancialEntry fromScreen={entryType} sortOption={orderOptionSelected.optionSelected} interactionId={interationId} onRowSelection={onSelectGridRow}/>
                 </div>                      
             </div>
         </div>

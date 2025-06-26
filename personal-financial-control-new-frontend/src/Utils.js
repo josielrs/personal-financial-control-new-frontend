@@ -11,3 +11,7 @@ export const showInfoMessage = (message,type) => {
         </div>
     )        
 }
+
+export const isUndefined = function(value){
+  return !value || value == undefined
+}
