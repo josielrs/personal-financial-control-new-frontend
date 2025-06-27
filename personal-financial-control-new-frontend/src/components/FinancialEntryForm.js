@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { SERVER_ENDPOINT, showInfoMessage, isUndefined } from '../Utils'
-import { confirmAlert } from 'react-confirm-alert';
 
 import axios from 'axios'
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
@@ -12,7 +11,9 @@ export default function FinancialEntryForm(props){
 
     const entryType = props.entryType
     const callbackToUpdate = props.callbackFunctionToUpdate
-    const givenFinancialEntryData = isUndefined(props.givenFinancialEntryData)?{}:props.givenFinancialEntryData
+    const givenFinancialEntryData = useMemo(()=>{
+        return isUndefined(props.givenFinancialEntryData)?{}:props.givenFinancialEntryData
+    },[props.givenFinancialEntryData]) 
     
     const[financialEntryData,setFinancialEntryData] = useState(givenFinancialEntryData)
     const[categoryOptions, setCategoryOptions] = useState([])
@@ -40,37 +41,48 @@ export default function FinancialEntryForm(props){
 
     useEffect(() => {
         setFinancialEntryData(givenFinancialEntryData)
+        if (!isUndefined(givenFinancialEntryData) && (!isUndefined(givenFinancialEntryData.id))) {
+            document.getElementById("financialEntryId").value = givenFinancialEntryData.id
+            document.getElementById("financialEntryName").value = givenFinancialEntryData.name
+            document.getElementById("financialEntryCategory").value = givenFinancialEntryData.financial_entry_category_id
+            document.getElementById("financialEntryCreditCard").value = givenFinancialEntryData.credit_card_number
+            document.getElementById("financialEntryRecurrent").checked = (givenFinancialEntryData.recurrent === 1)
+            document.getElementById("financialEntryStartDate").value = givenFinancialEntryData.start_date
+            document.getElementById("financialEntryFinishDate").value = givenFinancialEntryData.finish_date
+            document.getElementById("financialEntryValue").value = givenFinancialEntryData.value
+            document.getElementById("financialEntryValueType").value = givenFinancialEntryData.value_type_id
+        }
     },[givenFinancialEntryData])
 
     useEffect(() => {
       axios.get(SERVER_ENDPOINT + '/financialControlCategory/?entry_type_id=' + entryTypeId)
         .then(res => {
                     let newOptions = []
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         res.data.financialEntryCategories.forEach(element => {
                             newOptions.push({'label':element.name,'value':element.id})                            
                         });
                         setCategoryOptions(newOptions)
-                    } else if (res.status == 204) {
+                    } else if (res.status === 204) {
                         setCategoryOptions(newOptions)
                     } else {
                         throw new Error(res.statusText)
                     }
           })  
         .catch(error => console.log('failed to return category itens '+error))
-    }, [entryType])
+    }, [entryType,entryTypeId])
 
 
     useEffect(() => {
       axios.get(SERVER_ENDPOINT + '/creditCard')
         .then(res => {
                     let newOptions = []
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         res.data.creditCards.forEach(element => {
                             newOptions.push({'label':element.description,'value':element.number})                            
                         });
                         setCreditCardList(newOptions)
-                    } else if (res.status == 204) {
+                    } else if (res.status === 204) {
                         setCreditCardList(newOptions)
                     } else {
                         throw new Error(res.statusText)
@@ -95,10 +107,10 @@ export default function FinancialEntryForm(props){
     if (isUndefined(valueTypeId)) {
         return 'Tipo de Valor não preenchido !!'
     }   
-    if (isUndefined(name) || name == '') {
+    if (isUndefined(name) || name === '') {
         return 'Por favor, dê um nome para esta movimentação !!!'
     }
-    if (isUndefined(startDate) || startDate == '') {
+    if (isUndefined(startDate) || startDate === '') {
         return 'Por favor, insira uma data de inicio da movimentação !!!'
     }
     }
@@ -131,7 +143,7 @@ export default function FinancialEntryForm(props){
         if (!isUndefined(nameValue)) {
             bodyContent.name = nameValue
         }
-        if (!isUndefined(recurrentValue) || recurrentValue == 0) {
+        if (!isUndefined(recurrentValue) || recurrentValue === 0) {
             bodyContent.recurrent = parseInt(recurrentValue)
         } else {
             bodyContent.recurrent = "0"
@@ -154,13 +166,13 @@ export default function FinancialEntryForm(props){
             headers: {"Content-type": "application/json"}
         })
             .then((response) => { 
-                if (response.ok || (response.status == 400)) {
+                if (response.ok || (response.status === 400)) {
                     return [response.status,response.json()]
                 } else {
                     throw new Error(response.statusText)
                 } })
             .then((data) => {
-            if (data[0]==200) {
+            if (data[0]===200) {
                 data[1].then(jsonObject => {
                 cleanButtonAction()
                 refreshCommand()
@@ -227,7 +239,7 @@ export default function FinancialEntryForm(props){
         if (!isUndefined(nameValue)) {
             bodyContent.name = nameValue
         }
-        if (!isUndefined(recurrentValue) || recurrentValue == 0) {
+        if (!isUndefined(recurrentValue) || recurrentValue === 0) {
             bodyContent.recurrent = parseInt(recurrentValue)
         }
         if (!isUndefined(startDate)) {
@@ -248,13 +260,13 @@ export default function FinancialEntryForm(props){
             headers: {"Content-type": "application/json"}
         })
             .then((response) => { 
-            if (response.ok || (response.status == 400)) {
+            if (response.ok || (response.status === 400)) {
                 return [response.status,response.json()]
             } else {
                 throw new Error(response.statusText)
             } })
             .then((data) => {
-            if (data[0]==200) {
+            if (data[0]===200) {
                 data[1].then(jsonObject => {
                     cleanButtonAction()
                     refreshCommand()
@@ -325,19 +337,15 @@ export default function FinancialEntryForm(props){
         }
     }
 
-    const returnRecurrentValue = () => {
-        return ((!isUndefined(financialEntryData))&&(!isUndefined(financialEntryData.recurrent))&&(financialEntryData.recurrent == "1"))?"on":undefined
-    }
-
     return (
         <div>
             <div style={{display:'flex'}}>
-                <Form.Control id="financialEntryId" type="hidden" placeholder="Nome" value={financialEntryData.id} onChange={formChangeValue} />
+                <Form.Control id="financialEntryId" type="hidden" onChange={formChangeValue} />
                 <FloatingLabel label="Nome" style={{width:600, paddingBottom:4}}>
-                    <Form.Control id="financialEntryName" type="text" placeholder="Nome" value={financialEntryData.name} onChange={formChangeValue} />
+                    <Form.Control id="financialEntryName" type="text" onChange={formChangeValue} />
                 </FloatingLabel>                    
                 <FloatingLabel label="Categoria" style={{width:400, paddingLeft:4, paddingBottom:4}}>
-                    <Form.Select id="financialEntryCategory" value={financialEntryData.financial_entry_category_id} onChange={formChangeValue}>
+                    <Form.Select id="financialEntryCategory" onChange={formChangeValue}>
                         <option label="Selecionar Valor" disabled selected value={-1}></option>
                         {categoryOptions.map((option) => (
                                                     <option key={option.value} value={option.value}>
@@ -347,7 +355,7 @@ export default function FinancialEntryForm(props){
                     </Form.Select>
                 </FloatingLabel>                        
                 <FloatingLabel label="Cartão de Crédito" style={{width:400, paddingLeft:4, paddingBottom:4}} hidden={entryType!=="expense"}>
-                    <Form.Select id="financialEntryCreditCard" value={financialEntryData.credit_card_number} onChange={formChangeValue}>
+                    <Form.Select id="financialEntryCreditCard" onChange={formChangeValue}>
                         <option label="Selecionar Valor" disabled selected value={-1}></option>
                         {creditCardList.map((option) => (
                                                     <option key={option.value} value={option.value}>
@@ -357,24 +365,24 @@ export default function FinancialEntryForm(props){
                     </Form.Select>
                 </FloatingLabel>
                 <div style={{alignItems:'center', display:'flex', paddingLeft:4, paddingBottom:4}}>
-                    <Form.Check  enabled id="financialEntryRecurrent" label="Recorrente" value={returnRecurrentValue} onChange={formChangeValue}/>
+                    <Form.Check  enabled id="financialEntryRecurrent" label="Recorrente" onChange={formChangeValue}/>
                 </div>
             </div>
             <div style={{display:'flex'}}>
                 <FloatingLabel label="Data Inicio" style={{paddingBottom:4}}>
-                    <Form.Control id="financialEntryStartDate" type="date" value={financialEntryData.start_date} onChange={formChangeValue}/>
+                    <Form.Control id="financialEntryStartDate" type="date" onChange={formChangeValue}/>
                 </FloatingLabel>  
                 <FloatingLabel label="Data Fim" style={{paddingLeft:4, paddingBottom:4}}>
-                    <Form.Control id="financialEntryFinishDate" type="date" value={financialEntryData.finish_date} onChange={formChangeValue}/>
+                    <Form.Control id="financialEntryFinishDate" type="date" onChange={formChangeValue}/>
                 </FloatingLabel>   
                 <FloatingLabel label="Valor (R$)" style={{width:600}}>
-                    <Form.Control id="financialEntryValue" type="number" value={financialEntryData.value} onChange={formChangeValue} />
+                    <Form.Control id="financialEntryValue" type="number" onChange={formChangeValue} />
                 </FloatingLabel>
                 <FloatingLabel label="Tipo Valor" style={{width:400, paddingLeft:4, paddingBottom:4}}>
-                    <Form.Select id="financialEntryValueType" value={financialEntryData.value_type_id} onChange={formChangeValue}>
+                    <Form.Select id="financialEntryValueType" onChange={formChangeValue}>
                         <option label="Selecionar Valor" disabled selected value={-1}></option>
-                        <option label="Fixo" value={0}></option>
-                        <option label="Variavel" value={1}></option>
+                        <option label="Fixo" value={1}></option>
+                        <option label="Variavel" value={2}></option>
                     </Form.Select>
                 </FloatingLabel>                       
             </div>

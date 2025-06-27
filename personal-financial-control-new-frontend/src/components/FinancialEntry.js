@@ -17,7 +17,7 @@ export default function FinancialEntry(props){
     const fromScreen = props.fromScreen
     const interactionId = props.interactionId
     const onRowSelection = props.onRowSelection
-    const hasData = (financialEntriesList != undefined) &&
+    const hasData = (financialEntriesList !== undefined) &&
                     !!financialEntriesList &&
                     financialEntriesList.length > 0   
     let descWidth = '600'
@@ -35,7 +35,19 @@ export default function FinancialEntry(props){
         case "reserve":
             serviceUrl = '/financialEntry?entry_type_id=3&last_entries=false'
             descWidth = '500'
-            break            
+            break      
+        case "revenueControl":
+            serviceUrl = '/financialEntry?entry_type_id=1&last_entries=false'
+            descWidth = '500'
+            break
+        case "expenseControl":
+            serviceUrl = '/financialEntry?entry_type_id=2&last_entries=false'
+            descWidth = '400'
+            break
+        case "reserveControl":
+            serviceUrl = '/financialEntry?entry_type_id=3&last_entries=false'
+            descWidth = '500'
+            break
         default:          
             serviceUrl = '/financialEntry?entry_type_id=0&last_entries=true'
     }
@@ -43,17 +55,21 @@ export default function FinancialEntry(props){
     useEffect(() => {
       axios.get(SERVER_ENDPOINT + serviceUrl)
         .then(res => {
-           setFinancialEntriesList(res.data.financialEntries)
+            if (res.status === 200) {
+                setFinancialEntriesList(res.data.financialEntries)
+            } else {
+                throw new Error(res.statusText)
+            }
           })  
-        .catch(error => showInfoMessage(error))
-    }, [sortOption,fromScreen,interactionId])
+        .catch(error => showInfoMessage("Falha ao Retornar dados do servidor: " + error.message))
+    }, [sortOption,fromScreen,interactionId,serviceUrl])
 
 
     const removeInFinancialEntryListGrid = (id) => {
-        const indexToRemove = financialEntriesList.findIndex(item => item.id == id)
+        const indexToRemove = financialEntriesList.findIndex(item => item.id === id)
 
         if (indexToRemove !== -1){
-            setFinancialEntriesList(financialEntriesList.filter(item => item.id != id))
+            setFinancialEntriesList(financialEntriesList.filter(item => item.id !== id))
         }
     }                    
 
@@ -71,13 +87,13 @@ export default function FinancialEntry(props){
         headers: {"Content-type": "application/json"}
     })
         .then((response) => { 
-            if (response.ok || (response.status == 400)) {
+            if (response === 200 || (response.status === 400)) {
                 return [response.status,response.json()]
             } else {
                 throw new Error(response.statusText)
             } })  
         .then((data) => {
-            if (data[0]==200) {
+            if (data[0]===200) {
                 removeInFinancialEntryListGrid(givenId)
             } else {
                 data[1].then(jsonObject => {showInfoMessage(jsonObject.message)})
@@ -94,7 +110,7 @@ export default function FinancialEntry(props){
     --------------------------------------------------------------------------------------
     */
     const deleteFinancialEntry = function(id,name,entryTypeId){
-        if (id == undefined || !id) {
+        if (id === undefined || !id) {
             alert('Identificador não selecionado para excluir !!')
             return
         }
@@ -185,8 +201,8 @@ export default function FinancialEntry(props){
                 hidden: (fromScreen === 'lastEntries'),
                 formatter: (cell, row, rowIndex) => {
                     
-                    if (cell != undefined || !!cell) {
-                        if (cell == "SIM") {
+                    if (cell !== undefined || !!cell) {
+                        if (cell === "SIM") {
                             return (
                                 <input type="checkbox" disabled={true} checked/>
                             )
@@ -204,7 +220,7 @@ export default function FinancialEntry(props){
                 formatter: (cell, row, rowIndex) => {
                     
                     let dateformated = '-'
-                    if (cell != undefined || !!cell) {
+                    if (cell !== undefined && !!cell) {
                         let valOfDate = new Date(cell+"T00:00:00")
                         const options = {
                             day: "numeric",
@@ -228,7 +244,7 @@ export default function FinancialEntry(props){
                 formatter: (cell, row, rowIndex) => {
                     
                     let dateformated = '-'
-                    if (cell != undefined || !!cell) {
+                    if (cell !== undefined && !!cell) {
                         let valOfDate = new Date(cell+"T00:00:00")
                         const options = {
                             day: "numeric",
@@ -254,7 +270,7 @@ export default function FinancialEntry(props){
                     let value = '(não informado)'
                     let colorCel = {color:'gray', fontSize: 12}
 
-                    if ((cell != undefined || !!cell) && (cell > 0)) {
+                    if ((cell !== undefined || !!cell) && (cell > 0)) {
                         value = cell.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                         if (row.entry_type_id === 1) {
                             colorCel = {color:'green'}
@@ -276,8 +292,8 @@ export default function FinancialEntry(props){
                 hidden: (fromScreen === 'lastEntries'),
                 formatter: (cell, row, rowIndex) => {
                     
-                    if (cell != undefined || !!cell) {
-                        if (cell == "FIXO") {
+                    if (cell !== undefined || !!cell) {
+                        if (cell === "FIXO") {
                             return (
                                 "F"
                             )
@@ -297,7 +313,7 @@ export default function FinancialEntry(props){
                 hidden: (fromScreen === 'lastEntries'),
                 formatter: (cell, row, rowIndex) => {
                     return (
-                        <span><img src={lixeira} width="15px" height="15px"/></span>
+                        <span><img src={lixeira} alt="" width="15px" height="15px"/></span>
                     )
                 },
                 events: deleteClickEvent
@@ -334,7 +350,7 @@ export default function FinancialEntry(props){
         whiteSpace: 'nowrap'
     }
 
-    let defaultSort = {dataField:'financial_entry_category_name',order:'asc'}
+    let defaultSort = {dataField:'id',order:'desc'}
 
     switch (sortOption) {
         case "lastentries":
@@ -359,8 +375,7 @@ export default function FinancialEntry(props){
                             hover={hasData} 
                             noDataIndication={noDataInfo}
                             rowStyle={rowStyle}
-                            classes="table-borderless"
-                            sort={defaultSort} />
+                            classes="table-borderless" />
         )
     } else {
         const selectRow = {
@@ -368,7 +383,7 @@ export default function FinancialEntry(props){
             clickToSelect: true,
             selected: false,
             onSelect: (row, isSelect, rowIndex, e) => {
-                if (onRowSelection != undefined){
+                if (onRowSelection !== undefined){
                     onRowSelection(row, rowIndex)
                 }
             }
