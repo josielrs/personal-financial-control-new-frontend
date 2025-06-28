@@ -35,18 +35,6 @@ export default function FinancialEntry(props){
         case "reserve":
             serviceUrl = '/financialEntry?entry_type_id=3&last_entries=false'
             descWidth = '500'
-            break      
-        case "revenueControl":
-            serviceUrl = '/financialEntry?entry_type_id=1&last_entries=false'
-            descWidth = '500'
-            break
-        case "expenseControl":
-            serviceUrl = '/financialEntry?entry_type_id=2&last_entries=false'
-            descWidth = '400'
-            break
-        case "reserveControl":
-            serviceUrl = '/financialEntry?entry_type_id=3&last_entries=false'
-            descWidth = '500'
             break
         default:          
             serviceUrl = '/financialEntry?entry_type_id=0&last_entries=true'
