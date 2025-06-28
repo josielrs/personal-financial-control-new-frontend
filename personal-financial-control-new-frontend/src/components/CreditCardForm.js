@@ -256,8 +256,8 @@ export default function CreditCardForm(props){
             <div style={{display:'flex', justifyContent:'center'}}>
                 <Form.Control id="creditCardId" type="hidden" placeholder="Nome" onChange={formChangeValue} />
                 <FloatingLabel label="Bandeira" style={{width:250, paddingLeft:4, paddingBottom:4}}>
-                    <Form.Select id="creditCardFlag" onChange={formChangeValue}>
-                        <option label="Selecionar Valor" disabled selected value={-1}></option>
+                    <Form.Select id="creditCardFlag" defaultValue={-1} onChange={formChangeValue}>
+                        <option label="Selecionar Valor" disabled value={-1}></option>
                         {creditCardFlagList.map((option) => (
                                                     <option key={option.value} value={option.value}>
                                                         {option.label}

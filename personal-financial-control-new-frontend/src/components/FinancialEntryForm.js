@@ -345,8 +345,8 @@ export default function FinancialEntryForm(props){
                     <Form.Control id="financialEntryName" type="text" onChange={formChangeValue} />
                 </FloatingLabel>                    
                 <FloatingLabel label="Categoria" style={{width:400, paddingLeft:4, paddingBottom:4}}>
-                    <Form.Select id="financialEntryCategory" onChange={formChangeValue}>
-                        <option label="Selecionar Valor" disabled selected value={-1}></option>
+                    <Form.Select id="financialEntryCategory" defaultValue={-1} onChange={formChangeValue}>
+                        <option label="Selecionar Valor" disabled value={-1}></option>
                         {categoryOptions.map((option) => (
                                                     <option key={option.value} value={option.value}>
                                                         {option.label}
@@ -355,8 +355,8 @@ export default function FinancialEntryForm(props){
                     </Form.Select>
                 </FloatingLabel>                        
                 <FloatingLabel label="Cartão de Crédito" style={{width:400, paddingLeft:4, paddingBottom:4}} hidden={entryType!=="expense"}>
-                    <Form.Select id="financialEntryCreditCard" onChange={formChangeValue}>
-                        <option label="Selecionar Valor" disabled selected value={-1}></option>
+                    <Form.Select id="financialEntryCreditCard" defaultValue={-1} onChange={formChangeValue}>
+                        <option label="Selecionar Valor" disabled value={-1}></option>
                         {creditCardList.map((option) => (
                                                     <option key={option.value} value={option.value}>
                                                         {option.label}
@@ -365,7 +365,7 @@ export default function FinancialEntryForm(props){
                     </Form.Select>
                 </FloatingLabel>
                 <div style={{alignItems:'center', display:'flex', paddingLeft:4, paddingBottom:4}}>
-                    <Form.Check  enabled id="financialEntryRecurrent" label="Recorrente" onChange={formChangeValue}/>
+                    <Form.Check  enabled="true" id="financialEntryRecurrent" label="Recorrente" onChange={formChangeValue}/>
                 </div>
             </div>
             <div style={{display:'flex'}}>
@@ -379,8 +379,8 @@ export default function FinancialEntryForm(props){
                     <Form.Control id="financialEntryValue" type="number" onChange={formChangeValue} />
                 </FloatingLabel>
                 <FloatingLabel label="Tipo Valor" style={{width:400, paddingLeft:4, paddingBottom:4}}>
-                    <Form.Select id="financialEntryValueType" onChange={formChangeValue}>
-                        <option label="Selecionar Valor" disabled selected value={-1}></option>
+                    <Form.Select id="financialEntryValueType" defaultValue={-1} onChange={formChangeValue}>
+                        <option label="Selecionar Valor" disabled value={-1}></option>
                         <option label="Fixo" value={1}></option>
                         <option label="Variavel" value={2}></option>
                     </Form.Select>

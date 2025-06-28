@@ -106,8 +106,8 @@ export default function FinancialControlMenu(props){
         document.getElementById("financialControlValue").disabled = false
         document.getElementById("financialControlValue").value = 0
         document.getElementById("financialControlValue").readOnly = true
-        document.getElementById("financialControlValueMonth").value = undefined
-        document.getElementById("financialControlValueYear").value = undefined
+        document.getElementById("financialControlValueMonth").value = null
+        document.getElementById("financialControlValueYear").value = null
         document.getElementById("financialControlValueId").value = -1
         document.getElementById("graphDiv").hidden = false
         document.getElementById("filterButtonDiv").hidden = false
@@ -120,13 +120,13 @@ export default function FinancialControlMenu(props){
         document.getElementById("financialControlList").value = -1
         document.getElementById("financialControlMonthList").value = -1
         document.getElementById("financialControlMonthList").disabled = false
-        document.getElementById("financialControlYear").value = undefined
+        document.getElementById("financialControlYear").value = null
         document.getElementById("financialControlYear").disabled = false
         document.getElementById("financialControlValue").disabled = true
-        document.getElementById("financialControlValue").value = undefined
+        document.getElementById("financialControlValue").value = null
         document.getElementById("financialControlValue").readOnly = true
-        document.getElementById("financialControlValueMonth").value = undefined
-        document.getElementById("financialControlValueYear").value = undefined
+        document.getElementById("financialControlValueMonth").value = null
+        document.getElementById("financialControlValueYear").value = null
         document.getElementById("financialControlValueId").value = -1        
         document.getElementById("graphDiv").hidden = true
         document.getElementById("filterButtonDiv").hidden = true
@@ -155,9 +155,9 @@ export default function FinancialControlMenu(props){
         } else {
             document.getElementById("financialControlValue").readOnly = true
             document.getElementById("financialControlValue").disabled = true
-            document.getElementById("financialControlValue").value = undefined
-            document.getElementById("financialControlValueMonth").value = undefined
-            document.getElementById("financialControlValueYear").value = undefined
+            document.getElementById("financialControlValue").value = null
+            document.getElementById("financialControlValueMonth").value = null
+            document.getElementById("financialControlValueYear").value = null
             document.getElementById("financialControlValueId").value = -1
         }
     }
@@ -366,7 +366,7 @@ export default function FinancialControlMenu(props){
         let year = document.getElementById("financialControlYear").value
         postBuildFinancialControl(month,year)
         document.getElementById("financialControlMonthList").value = -1
-        document.getElementById("financialControlYear").value = undefined
+        document.getElementById("financialControlYear").value = null
     }
 
 
@@ -375,7 +375,9 @@ export default function FinancialControlMenu(props){
         if (!isUndefined(id) && id > 0){
             updateFinancialData()
         } else {
-            createFinancialData()
+            if (!document.getElementById("financialControlYear").disabled) {
+                createFinancialData()
+            }
         }
     }
 
@@ -428,8 +430,8 @@ export default function FinancialControlMenu(props){
                     <div style={{display:'flex'}}>
                         <div style={{paddingTop:40}}>
                             <FloatingLabel label="Consultar Controle" style={{width:250, paddingRight:10}}>
-                                <Form.Select id="financialControlList" onChange={financialControlSelectValue}>
-                                    <option label="Selecionar Valor" disabled selected value={-1}></option>
+                                <Form.Select id="financialControlList" defaultValue={-1} onChange={financialControlSelectValue}>
+                                    <option label="Selecionar Valor" disabled value={-1}></option>
                                     {financialControlsList.map((option) => (
                                                                 <option key={option.value} value={option.value}>
                                                                     {option.label}
@@ -440,8 +442,8 @@ export default function FinancialControlMenu(props){
                         </div>
                         <div>
                             <FloatingLabel label="Mês" style={{width:250, paddingRight:10, paddingBottom:10}}>
-                                <Form.Select id="financialControlMonthList">
-                                    <option label="Selecionar Valor" disabled selected value={-1}></option>
+                                <Form.Select id="financialControlMonthList" defaultValue={-1} >
+                                    <option label="Selecionar Valor" disabled value={-1}></option>
                                     <option label="JANEIRO" value={1}></option>
                                     <option label="FEVEREIRO" value={2}></option>
                                     <option label="MARÇO" value={3}></option>
