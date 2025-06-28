@@ -271,7 +271,7 @@ export default function FinancialControlMenu(props){
         .then((response) => { 
                 if (response.ok) {
                     return undefined
-                } else if (response.status == 400) {
+                } else if (response.status === 400) {
                     return response.json()
                 } else {
                     throw new Error(response.statusText)
@@ -296,10 +296,10 @@ export default function FinancialControlMenu(props){
     --------------------------------------------------------------------------------------
     */
     const preValidateFinacialControlFormData = function(month,year){
-        if (isUndefined(month) || month == '') {
+        if (isUndefined(month) || month === '') {
             return 'Mês deve ser informado !!!'
         }
-        if (isUndefined(year) || year == '') {
+        if (isUndefined(year) || year === '') {
             return 'Ano deve ser informado !!!'
         }
     }
@@ -330,7 +330,7 @@ export default function FinancialControlMenu(props){
         .then((response) => {
                 if (response.ok) {
                     return undefined
-                } else if (response.status == 400) {
+                } else if (response.status === 400) {
                     return response.json()
                 } else {
                     throw new Error(response.statusText)
@@ -491,9 +491,9 @@ export default function FinancialControlMenu(props){
                     <div id="filterButtonDiv" style={{paddingTop:50,display:'flex', justifyContent:'center'}} hidden>
                         <div>
                             <ButtonGroup className="mb-2">
-                                <Button onClick={()=>orderButtonOptionClick(1)} style={{width:240,borderRadius:'20px 0px 0px 20px',borderColor:'#79747E',color:'black',backgroundColor:orderOptionSelected.option1BC}}><img src={check} hidden={orderOptionSelected.option1ImgHidden}/>Receita</Button>
-                                <Button onClick={()=>orderButtonOptionClick(2)} style={{width:240,borderColor:'#79747E',color:'black',backgroundColor:orderOptionSelected.option2BC}}><img src={check} hidden={orderOptionSelected.option2ImgHidden}/>Despesa</Button>
-                                <Button onClick={()=>orderButtonOptionClick(3)} style={{width:240,borderRadius:'0px 20px 20px 0px',borderColor:'#79747E',color:'black',backgroundColor:orderOptionSelected.option3BC}}><img src={check} hidden={orderOptionSelected.option3ImgHidden}/>Reserva</Button>
+                                <Button onClick={()=>orderButtonOptionClick(1)} style={{width:240,borderRadius:'20px 0px 0px 20px',borderColor:'#79747E',color:'black',backgroundColor:orderOptionSelected.option1BC}}><img src={check} alt="" hidden={orderOptionSelected.option1ImgHidden}/>Receita</Button>
+                                <Button onClick={()=>orderButtonOptionClick(2)} style={{width:240,borderColor:'#79747E',color:'black',backgroundColor:orderOptionSelected.option2BC}}><img src={check} alt="" hidden={orderOptionSelected.option2ImgHidden}/>Despesa</Button>
+                                <Button onClick={()=>orderButtonOptionClick(3)} style={{width:240,borderRadius:'0px 20px 20px 0px',borderColor:'#79747E',color:'black',backgroundColor:orderOptionSelected.option3BC}}><img src={check} alt="" hidden={orderOptionSelected.option3ImgHidden}/>Reserva</Button>
                             </ButtonGroup>
                         </div>
                     </div>                                    
