@@ -45,6 +45,8 @@ export default function FinancialEntry(props){
         .then(res => {
             if (res.status === 200) {
                 setFinancialEntriesList(res.data.financialEntries)
+            } else if (res.status === 204) {
+                setFinancialEntriesList([])
             } else {
                 throw new Error(res.statusText)
             }

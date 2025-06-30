@@ -396,9 +396,9 @@ export default function FinancialControlMenu(props){
 
     const data = [
                     ["Financial Entry Type", "Amount Financial Values"],
-                    ["Despesa", financialControlSummaryData.expensesAmout],
-                    ["Reserva", financialControlSummaryData.reservesAmount],
-                    ["Saldo", financialControlSummaryData.difference]
+                    ["Despesa", (financialControlSummaryData.expensesAmout<0)?0:financialControlSummaryData.expensesAmout],
+                    ["Reserva", (financialControlSummaryData.reservesAmount<0)?0:financialControlSummaryData.reservesAmount],
+                    ["Saldo", (financialControlSummaryData.difference<0)?0:financialControlSummaryData.difference]
                 ]
 
     const options = {
