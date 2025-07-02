@@ -1,70 +1,120 @@
-# Getting Started with Create React App
+# Bem Vindo ao SMART FIN - Controle Financeiro Pessoal!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto é um front-end de uma aplicação cujo propósito é auxiliar o usuário no controle de seus gastos mensais, registrando receitas, despesas e reservas num só lugar possibilitando ao usuário uma visão mais ampla de como sua vida financeira acontece, de onde vem as receitas, quanto elas são, e pra onde elas estão indo. Desta forma o usuário poderá tomar decisões mais estratégicas alinhadas com seus objetivos pessoais.
 
-## Available Scripts
+desktop
+https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=16-2175&p=f&m=dev&scaling=scale-down&content-scaling=fixed&page-id=14%3A1168&starting-point-node-id=16%3A2175&t=tYZAKwMaNCVxNOjC-1
+emblem-relate-botany-plane
+mobile
+https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=4-802&p=f&m=dev&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=4%3A802&t=OVZb0SvBX92Kiv0y-1
 
-In the project directory, you can run:
+## ARQUIVOS
 
-### `npm start`
+Segue abaixo uma descrição da estrutura do projeto
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### database
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Arquivos referente à base de dados da aplicação, aqui você encontra o arquivo da base de dados, o DER e o script de montagem da base.
 
-### `npm test`
+### model
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Classes que representam os modelos de dados manipulados pela aplicação. Cada classe representa uma tabela do banco de dados e se torna um objeto da aplicação.
 
-### `npm run build`
+### schemas
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Classes que representam os dados de entrada e saida da API do sistema.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### services
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Classes que implementam todas as operações que serão realizadas em cima dos objetos da aplicação, elas implementam as regras de negócio
 
-### `npm run eject`
+### repository
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Classes que implementam as operações de manipulação de dados no banco de dados
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### api_json.json
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Arquivo JSON da API para importar no POSTMAN.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## COMO EXECUTAR
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Será necessário ter todas as libs python listadas no `requirements.txt` instaladas.
+Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal, para poder executar os comandos descritos abaixo.
 
-### Analyzing the Bundle Size
+> É fortemente indicado o uso de ambientes virtuais do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+(env)$ pip install -r requirements.txt
+```
 
-### Making a Progressive Web App
+Este comando instala as dependências/bibliotecas, descritas no arquivo `requirements.txt`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Para executar a API  basta executar:
 
-### Advanced Configuration
+```
+(env)$ python -m flask run --host 0.0.0.0 --port 5000
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Em modo de desenvolvimento é recomendado executar utilizando o parâmetro reload, que reiniciará o servidor
+automaticamente após uma mudança no código fonte. 
 
-### Deployment
+```
+(env)$ flask run --host 0.0.0.0 --port 5000 --reload
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Abra o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador para verificar o status da API em execução.
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## DOCUMENTAÇÕES
+
+Segue abaixo a documentação deste projeto
+
+## DER
+
+Segue abaixo o diagrama entidade e relacionamento do projeto
+
+![Diagrama de Entidade e Relacionamento](./database/DER.png)
+
+### FINANCIAL_CONTROL
+
+Nessa tabela terá os meses controlados pelo usuário, em próximas versões ela terá features adicionais onde o usuário poderá abrir, fechar, simular sua finanças dentro de cada mês e ano desejados, de forma a manter o controle mensal das finanças do usuário mês a mês
+
+### FINANCIAL_CONTROL_ENTRY
+
+Nesta tabela o usuário associará as movimentações financeiras ao controle mensal, podendo dar à movimentação caracteristicas específicas dentro do respectivo mes e ano de controle
+
+### FINANCIAL_ENTRY
+
+Nesta tabela conterá as movimentações financeiras de RECEITA, RESERVA e DESPESAS
+
+### CREDIT_CARD
+
+Tabela com os cartões de crédito do usuário
+
+### FINANCIAL_ENTRY_CATEGORY
+
+Tabela com o cadastro de categorias para as movimentações
+
+### ENTRY_TYPE
+
+Tabela auxiliar com o tipo de movimentação RECEITA, RESERVA ou DESPESA
+
+### VALUE_TYPE
+
+Tabela auxiliar com o tipo de valor possivel para movimentação, FIXO ou VARIAVEL
+
+### CREDIT_CARD_FLAG
+
+Tabela auxiliar com as bandeiras de cartão disponiveis no sistema.
+
+
+
+## API Documentation - SWAGGER
+
+Abra o [http://localhost:5000/docs](http://localhost:5000/docs) no navegador para verificar a documentação das APIs.
