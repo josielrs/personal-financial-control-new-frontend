@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { ProgressBar } from 'smart-webcomponents-react/progressbar';
 import { SERVER_ENDPOINT } from '../Utils'
 
-import FinancialEntry from '../components/FinancialEntry';
+import FinancialEntry from './FinancialEntry';
 import axios from 'axios'
 
 import 'smart-webcomponents-react/source/styles/smart.default.css';
 
-export default function HomePageMenu(){
+export default function InitialInformation(){
 
     const initialData = {
         "description": "Sem Informações",
@@ -69,7 +69,7 @@ export default function HomePageMenu(){
                 </div>
             </div>
 
-            <div style={{width: 918, height: 520, left: 118, top: 235, position: 'absolute', background: 'white', boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.04)', borderRadius: 19}}>
+            <div style={{width: 948, height: 520, left: 118, top: 235, position: 'absolute', background: 'white', boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.04)', borderRadius: 19}}>
                 <div style={{width: 918, height: 420.38, left: 0, top: 80, position: 'relative'}}>
                     <FinancialEntry fromScreen={"lastEntries"} />
                 </div>

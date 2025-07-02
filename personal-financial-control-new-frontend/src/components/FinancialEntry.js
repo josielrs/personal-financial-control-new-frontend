@@ -6,15 +6,19 @@ import axios from 'axios'
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import lixeira from '../assets/lixeira-de-reciclagem.png'
+import { useLocation } from "react-router-dom";
 
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function FinancialEntry(props){
 
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search)
+
     const [financialEntriesList, setFinancialEntriesList] = useState([])
     const sortOption = props.sortOption
-    const fromScreen = props.fromScreen
+    const fromScreen = (location.pathname !== '/')?searchParams.get("type"):"lastEntries"
     const interactionId = props.interactionId
     const onRowSelection = props.onRowSelection
     const hasData = (financialEntriesList !== undefined) &&

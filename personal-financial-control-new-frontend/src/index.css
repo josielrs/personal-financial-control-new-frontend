@@ -55,3 +55,27 @@ body .warning {
   background-color: #6750A4 !important;
   border-color: #6750A4 !important;
 }
+
+.subPageContent{
+  width: 1153px;
+  height: 814px;
+  left: 322px;
+  top: 150px;
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+}
+
+.smartFinApp{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.smartFinHome{
+  width: 1512px;
+  height: 982px;
+  position: relative;
+  background-color: #F1FFF3;
+  overflow: hidden;
+}
