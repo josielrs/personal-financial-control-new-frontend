@@ -4,86 +4,88 @@ Este projeto é um front-end de uma aplicação cujo propósito é auxiliar o us
 
 
 ## ARQUIVOS
+-----------
 
 Segue abaixo uma descrição da estrutura do projeto
 
-### assets
+### ASSETS
 
 Arquivos estáticos da aplicação, tais como icones e imagens
 
-### components
+### COMPONENTS
 
 Componentes REACT que compem a aplicação
 
-#### CreditCard
+#### *CreditCard*
 
 Componente referente ao grid de Cartão de Crédito
 
-#### CreditCardForm
+#### *CreditCardForm*
 
 Componente referente ao formulário de cadastro/edição de um cartão de crédito
 
-#### FinancialControlEntry
+#### *FinancialControlEntry*
 
 Componente referente ao grid de movimentações financeiras pertencentes a um controle mensal 
 
-#### FinancialEntry
+#### *FinancialEntry*
 
 Componente referente ao grid de movimentações financeiras em geral da aplicação
 
-#### FinancialEntryForm
+#### *FinancialEntryForm*
 
 Componente referente ao formulário de cadastro/edição de movimentações financeiras.
 
-#### InitialInformation
+#### *InitialInformation*
 
 Componente referente aos dados das movimentações financeiras correntes que são apresentadas na tela inicial da aplicação
 
-#### MainContent
+#### *MainContent*
 
-Component referente a estrutura principal da pagina da aplicação, nela temos o titulo da aplicação e o menu
+Componente referente a estrutura principal da pagina da aplicação, nela temos o titulo da aplicação e o menu
 
-#### Menu
+#### *Menu*
 
-Component referente ao menu da aplicação.
+Componente referente ao menu da aplicação.
 
-### pages
+### PAGES
 
 As paginas que compoem a aplicação
 
-#### CreditCardMenu
+#### *CreditCardMenu*
 
 Pagina da aplicação para cadastro, edição e exclusão de cartão de crédito.
 
-#### FinancialControlMenu
+#### *FinancialControlMenu*
 
 Pagina da aplicação para montagem e edição de controles mensais
 
-#### FinancialEntryMenu
+#### *FinancialEntryMenu*
 
 Pagina da aplicação para cadastro, edição e exclusão de movimentações finaceiras
 
-#### NotFoundPage
+#### *NotFoundPage*
  
 Pagina da aplicação para rotas incorretas
 
-### App
+### *App*
 
 Pagina principal da aplicação
 
-### index.css
+### *index.css*
 
 Aquivo CSS da aplicação
 
-### Utils
+### *Utils*
 
 Arquivo com constantes auxiliares para a apliação
 
 ## PROTOTIPO DO FRONT-END DA APLICAÇÃO
+-------------------
 
 Segue abaixo o link figma para navegação no protótipo da aplicação.
 
-PARA AMBOS LINKS UTILIZAR A SENHA: emblem-relate-botany-plane
+> **PARA AMBOS LINKS UTILIZAR A SENHA:** *emblem-relate-botany-plane*
 
 ### Prototipo DESKTOP
 
@@ -95,7 +97,7 @@ https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=4-802&p=f&m=
 
 
 ## COMO EXECUTAR
-
+---------
 Será necessário ter NodeJS instalado (estou utilizando a versão 22.16.0) e também subir a aplicação BACK-END utilizada pela aplicação.
 
 > Precisaremos subir o BACK-END da aplicação que pode ser acesso pelo link: https://github.com/josielrs/personal-financial-control-app , neste link você terá instruções para subir a aplicação.
