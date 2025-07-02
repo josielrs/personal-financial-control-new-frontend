@@ -75,6 +75,10 @@ Pagina principal da aplicação
 
 Aquivo CSS da aplicação
 
+### Utils
+
+Arquivo com constantes auxiliares para a apliação
+
 ## PROTOTIPO DO FRONT-END DA APLICAÇÃO
 
 Segue abaixo o link figma para navegação no protótipo da aplicação.
