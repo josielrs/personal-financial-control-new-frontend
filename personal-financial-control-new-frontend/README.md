@@ -2,119 +2,110 @@
 
 Este projeto é um front-end de uma aplicação cujo propósito é auxiliar o usuário no controle de seus gastos mensais, registrando receitas, despesas e reservas num só lugar possibilitando ao usuário uma visão mais ampla de como sua vida financeira acontece, de onde vem as receitas, quanto elas são, e pra onde elas estão indo. Desta forma o usuário poderá tomar decisões mais estratégicas alinhadas com seus objetivos pessoais.
 
-desktop
-https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=16-2175&p=f&m=dev&scaling=scale-down&content-scaling=fixed&page-id=14%3A1168&starting-point-node-id=16%3A2175&t=tYZAKwMaNCVxNOjC-1
-emblem-relate-botany-plane
-mobile
-https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=4-802&p=f&m=dev&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=4%3A802&t=OVZb0SvBX92Kiv0y-1
 
 ## ARQUIVOS
 
 Segue abaixo uma descrição da estrutura do projeto
 
-### database
+### assets
 
-Arquivos referente à base de dados da aplicação, aqui você encontra o arquivo da base de dados, o DER e o script de montagem da base.
+Arquivos estáticos da aplicação, tais como icones e imagens
 
-### model
+### components
 
-Classes que representam os modelos de dados manipulados pela aplicação. Cada classe representa uma tabela do banco de dados e se torna um objeto da aplicação.
+Componentes REACT que compem a aplicação
 
-### schemas
+#### CreditCard
 
-Classes que representam os dados de entrada e saida da API do sistema.
+Componente referente ao grid de Cartão de Crédito
 
-### services
+#### CreditCardForm
 
-Classes que implementam todas as operações que serão realizadas em cima dos objetos da aplicação, elas implementam as regras de negócio
+Componente referente ao formulário de cadastro/edição de um cartão de crédito
 
-### repository
+#### FinancialControlEntry
 
-Classes que implementam as operações de manipulação de dados no banco de dados
+Componente referente ao grid de movimentações financeiras pertencentes a um controle mensal 
 
-### api_json.json
+#### FinancialEntry
 
-Arquivo JSON da API para importar no POSTMAN.
+Componente referente ao grid de movimentações financeiras em geral da aplicação
 
+#### FinancialEntryForm
 
+Componente referente ao formulário de cadastro/edição de movimentações financeiras.
+
+#### InitialInformation
+
+Componente referente aos dados das movimentações financeiras correntes que são apresentadas na tela inicial da aplicação
+
+#### MainContent
+
+Component referente a estrutura principal da pagina da aplicação, nela temos o titulo da aplicação e o menu
+
+#### Menu
+
+Component referente ao menu da aplicação.
+
+### pages
+
+As paginas que compoem a aplicação
+
+#### CreditCardMenu
+
+Pagina da aplicação para cadastro, edição e exclusão de cartão de crédito.
+
+#### FinancialControlMenu
+
+Pagina da aplicação para montagem e edição de controles mensais
+
+#### FinancialEntryMenu
+
+Pagina da aplicação para cadastro, edição e exclusão de movimentações finaceiras
+
+#### NotFoundPage
+ 
+Pagina da aplicação para rotas incorretas
+
+### App
+
+Pagina principal da aplicação
+
+### index.css
+
+Aquivo CSS da aplicação
+
+## PROTOTIPO DO FRONT-END DA APLICAÇÃO
+
+Segue abaixo o link figma para navegação no protótipo da aplicação.
+
+PARA AMBOS LINKS UTILIZAR A SENHA: emblem-relate-botany-plane
+
+### Prototipo DESKTOP
+
+https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=16-2175&p=f&m=dev&scaling=scale-down&content-scaling=fixed&page-id=14%3A1168&starting-point-node-id=16%3A2175&t=tYZAKwMaNCVxNOjC-1
+
+### Prototipo MOBILE
+
+https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=4-802&p=f&m=dev&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=4%3A802&t=OVZb0SvBX92Kiv0y-1
 
 
 ## COMO EXECUTAR
 
+Será necessário ter NodeJS instalado (estou utilizando a versão 22.16.0) e também subir a aplicação BACK-END utilizada pela aplicação.
 
-Será necessário ter todas as libs python listadas no `requirements.txt` instaladas.
-Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal, para poder executar os comandos descritos abaixo.
+> Precisaremos subir o BACK-END da aplicação que pode ser acesso pelo link: https://github.com/josielrs/personal-financial-control-app , neste link você terá instruções para subir a aplicação.
 
-> É fortemente indicado o uso de ambientes virtuais do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html).
-
-```
-(env)$ pip install -r requirements.txt
-```
-
-Este comando instala as dependências/bibliotecas, descritas no arquivo `requirements.txt`.
-
-Para executar a API  basta executar:
+Após o back-end estiver rodando, será necessário instalar as dependencias atráves do comando
 
 ```
-(env)$ python -m flask run --host 0.0.0.0 --port 5000
+npm install
 ```
 
-Em modo de desenvolvimento é recomendado executar utilizando o parâmetro reload, que reiniciará o servidor
-automaticamente após uma mudança no código fonte. 
+Após isso basta subir o nosso servidor
 
 ```
-(env)$ flask run --host 0.0.0.0 --port 5000 --reload
+npm start
 ```
 
-Abra o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador para verificar o status da API em execução.
-
-
-
-
-## DOCUMENTAÇÕES
-
-Segue abaixo a documentação deste projeto
-
-## DER
-
-Segue abaixo o diagrama entidade e relacionamento do projeto
-
-![Diagrama de Entidade e Relacionamento](./database/DER.png)
-
-### FINANCIAL_CONTROL
-
-Nessa tabela terá os meses controlados pelo usuário, em próximas versões ela terá features adicionais onde o usuário poderá abrir, fechar, simular sua finanças dentro de cada mês e ano desejados, de forma a manter o controle mensal das finanças do usuário mês a mês
-
-### FINANCIAL_CONTROL_ENTRY
-
-Nesta tabela o usuário associará as movimentações financeiras ao controle mensal, podendo dar à movimentação caracteristicas específicas dentro do respectivo mes e ano de controle
-
-### FINANCIAL_ENTRY
-
-Nesta tabela conterá as movimentações financeiras de RECEITA, RESERVA e DESPESAS
-
-### CREDIT_CARD
-
-Tabela com os cartões de crédito do usuário
-
-### FINANCIAL_ENTRY_CATEGORY
-
-Tabela com o cadastro de categorias para as movimentações
-
-### ENTRY_TYPE
-
-Tabela auxiliar com o tipo de movimentação RECEITA, RESERVA ou DESPESA
-
-### VALUE_TYPE
-
-Tabela auxiliar com o tipo de valor possivel para movimentação, FIXO ou VARIAVEL
-
-### CREDIT_CARD_FLAG
-
-Tabela auxiliar com as bandeiras de cartão disponiveis no sistema.
-
-
-
-## API Documentation - SWAGGER
-
-Abra o [http://localhost:5000/docs](http://localhost:5000/docs) no navegador para verificar a documentação das APIs.
+Abra o [http://localhost:3000](http://localhost:3000) no navegador para verificar o status da API em execução.

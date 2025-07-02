@@ -18,5 +18,5 @@ export const showInfoMessage = (message) => {
 }
 
 export const isUndefined = function(value){
-  return !value || value == undefined
+  return !value || value === undefined
 }
