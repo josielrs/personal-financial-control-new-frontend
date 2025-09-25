@@ -96,7 +96,7 @@ https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=16-2175&p=f&
 https://www.figma.com/proto/DcCaO9oNCeLPuDfWPlVEBN/Untitled?node-id=4-802&p=f&m=dev&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=4%3A802&t=OVZb0SvBX92Kiv0y-1
 
 
-## COMO EXECUTAR
+## COMO EXECUTAR (SEM DOCKER)
 ---------
 Será necessário ter NodeJS instalado (estou utilizando a versão 22.16.0) e também subir a aplicação BACK-END utilizada pela aplicação.
 
@@ -113,5 +113,24 @@ Após isso basta subir o nosso servidor
 ```
 npm start
 ```
+
+## COMO EXECUTAR (UTILIZANDO DOCKER)
+---------
+
+Após instalado o docker no seu dispositivo, execute o seguinte nesta mesma pasta deste arquivo (onde inclusive temos o nosso Dockerfile):
+
+> para criar o container do nosso projeto
+
+```
+docker build -t personal-financial-control-frontend .
+```
+
+> para executar 
+
+```
+docker run -p 3000:3000 personal-financial-control-frontend
+```
+
+
 
 Abra o [http://localhost:3000](http://localhost:3000) no navegador para verificar o status da API em execução.
