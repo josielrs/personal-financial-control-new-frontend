@@ -16,7 +16,7 @@ export default function DollarCotation(props){
     let serviceUrl = 'https://brasilapi.com.br/api/cambio/v1/cotacao/USD/' + `${ano}${mes}${dia}`
 
     useEffect(() => {
-      axios.get(serviceUrl)
+      axios.get(serviceUrl,{fetchOptions: {mode: 'no-cors'}})
         .then(res => {
             if (res.status === 200) {
                 if (!!res.data.cotacoes) {

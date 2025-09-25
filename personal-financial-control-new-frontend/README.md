@@ -128,7 +128,7 @@ docker build -t personal-financial-control-frontend .
 > para executar 
 
 ```
-docker run -p 3000:3000 personal-financial-control-frontend
+docker run -p 3000:3000 --add-host brasilapi.com.br:2606:4700:3031::ac43:ce89  personal-financial-control-frontend
 ```
 
 
